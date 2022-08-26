@@ -4,14 +4,16 @@ export class Button {
   url: String;
   path: String;
   title: String;
+  type: String;
 
-  constructor(url: String, path: String, title: String) {
+  constructor(url: String, path: String, title: String, type: String) {
     this.url = url;
     this.path = path;
     this.title = title;
+    this.type = type;
   }
 
-  public propsAreNotEmpty() {
+  public propsAreNotEmpty(): Boolean {
     return isEmpty(this.url) && isEmpty(this.path);
   }
 
@@ -20,20 +22,24 @@ export class Button {
     const url = isEmpty(this.url);
 
     return {
-      path,
-      url,
+      propPath: path,
+      propUrl: url,
     };
   }
 
-  public getPath() {
+  public getPath(): String {
     return this.path;
   }
 
-  public getUrl() {
+  public getUrl(): String {
     return this.url;
   }
 
-  public getTitle() {
+  public getTitle(): String {
     return this.title;
+  }
+
+  public getType(): String {
+    return this.type;
   }
 }

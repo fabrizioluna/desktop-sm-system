@@ -1,45 +1,57 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './button';
+import { Button as MaterialButton } from '@material-ui/core';
 
 interface Props {
   configuration: {
     title: String;
     url?: String;
     path?: String;
-    // componentRender: any;
+    type: String;
   };
 }
 
+const Colors = ['inherit', 'default', 'primary', 'secondary'];
+
 export const CustomButton = ({ configuration }: Props) => {
-  const { title, path, url } = configuration;
+  const { title, path, url, type } = configuration;
 
   // Instance of Button class
-  const button = new Button(path as String, url as String, title as String);
-
-  // Check Props
+  const button = new Button(
+    url as String,
+    path as String,
+    title as String,
+    type as String
+  );
   const propsCheck = button.propsAreNotEmpty();
 
-  if (!propsCheck) {
+  if (propsCheck) {
+    // Send a error console when the button has no path and url props.
     console.error(
       'We can not create this button because the path and url are empty.'
     );
   }
 
-  const { path: propPath } = button.getPropToRedirect();
+  const { propPath } = button.getPropToRedirect();
+
+  // Generate button with a specific type
   return (
     <div>
       {propPath
-        ? buttonWithPath(button.getTitle(), button.getPath())
-        : buttonWithUrl(button.getTitle(), button.getPath())}
+        ? buttonWithPath(button.getTitle(), button.getPath(), button.getType())
+        : buttonWithUrl(button.getTitle(), button.getUrl())}
     </div>
   );
 };
 
-function buttonWithPath(title: String, path: String) {
+// Button builders functions
+function buttonWithPath(title: String, path: String, type: String) {
   return (
     <Link to={`${path}`}>
-      <button>{title}</button>
+      <MaterialButton variant='contained' style={{color: Colors[type as any]}}>
+        {title}
+      </MaterialButton>
     </Link>
   );
 }
